@@ -1,0 +1,8 @@
+{
+  "name": "LingoVision",
+  "description": "An AI-powered language learning assistant that generates captions and vocabulary from your photos based on your proficiency level.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
