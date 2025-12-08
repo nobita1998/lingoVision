@@ -1,3 +1,4 @@
+
 export enum TargetLanguage {
   English = 'English',
   Japanese = 'Japanese',
@@ -32,4 +33,14 @@ export interface AnalysisResponse {
 export interface AudioState {
   isPlaying: boolean;
   isLoading: boolean;
+}
+
+export interface HistoryItem {
+  id: string;
+  timestamp: number;
+  imageBase64: string;
+  result: AnalysisResponse;
+  targetLang: TargetLanguage;
+  nativeLang: NativeLanguage;
+  level: string;
 }

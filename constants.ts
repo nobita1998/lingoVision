@@ -1,3 +1,4 @@
+
 import { TargetLanguage, NativeLanguage } from './types';
 
 export const LANGUAGE_OPTIONS = [
@@ -73,7 +74,10 @@ export const TRANSLATIONS = {
     waitingText: "Waiting for your awesome photo!",
     analyzingTitle: "Thinking...",
     analyzingSubtitle: "Targeting",
-    removeButton: "Remove & Upload New",
+    removeButton: "Remove Photo",
+    snapAnother: "✨ Snap Another",
+    historyTitle: "History",
+    historyEmpty: "No snaps yet!",
     tipTitle: "Tip:",
     tipText: "Upload a photo of your surroundings, a meal, or an object you want to learn about! 📸",
     settingsTitle: "Settings",
@@ -89,7 +93,8 @@ export const TRANSLATIONS = {
     captionLabel: "Caption",
     vocabLabel: "Vocabulary",
     errorGeneric: "Failed to analyze image. Please try again.",
-    processing: "Processing..."
+    processing: "Processing...",
+    regenerateButton: "Regenerate"
   },
   [NativeLanguage.Chinese]: {
     appTitle: "LingoVision",
@@ -99,7 +104,10 @@ export const TRANSLATIONS = {
     waitingText: "等待你的精彩照片！",
     analyzingTitle: "思考中...",
     analyzingSubtitle: "目标等级",
-    removeButton: "删除并重新上传",
+    removeButton: "删除照片",
+    snapAnother: "✨ 拍下一张",
+    historyTitle: "历史记录",
+    historyEmpty: "暂无记录",
     tipTitle: "提示：",
     tipText: "上传周围环境、食物或你想学习的物体的照片！📸",
     settingsTitle: "设置",
@@ -115,7 +123,8 @@ export const TRANSLATIONS = {
     captionLabel: "描述",
     vocabLabel: "词汇",
     errorGeneric: "分析图片失败。请重试。",
-    processing: "处理中..."
+    processing: "处理中...",
+    regenerateButton: "重新生成"
   },
   [NativeLanguage.Japanese]: {
     appTitle: "LingoVision",
@@ -125,7 +134,10 @@ export const TRANSLATIONS = {
     waitingText: "素敵な写真を待っています！",
     analyzingTitle: "考え中...",
     analyzingSubtitle: "目標レベル",
-    removeButton: "削除して再アップロード",
+    removeButton: "写真を削除",
+    snapAnother: "✨ 次を撮る",
+    historyTitle: "履歴",
+    historyEmpty: "履歴はありません",
     tipTitle: "ヒント：",
     tipText: "周りの風景、食事、または学びたい物の写真をアップロードしてください！📸",
     settingsTitle: "設定",
@@ -141,7 +153,8 @@ export const TRANSLATIONS = {
     captionLabel: "キャプション",
     vocabLabel: "単語",
     errorGeneric: "画像の分析に失敗しました。もう一度お試しください。",
-    processing: "処理中..."
+    processing: "処理中...",
+    regenerateButton: "再生成"
   },
   [NativeLanguage.Spanish]: {
     appTitle: "LingoVision",
@@ -151,7 +164,10 @@ export const TRANSLATIONS = {
     waitingText: "¡Esperando tu foto increíble!",
     analyzingTitle: "Pensando...",
     analyzingSubtitle: "Nivel objetivo",
-    removeButton: "Eliminar y subir nueva",
+    removeButton: "Eliminar foto",
+    snapAnother: "✨ Otra foto",
+    historyTitle: "Historial",
+    historyEmpty: "¡Aún no hay fotos!",
     tipTitle: "Consejo:",
     tipText: "¡Sube una foto de tu entorno, una comida o un objeto que quieras aprender! 📸",
     settingsTitle: "Configuración",
@@ -167,6 +183,7 @@ export const TRANSLATIONS = {
     captionLabel: "Descripción",
     vocabLabel: "Vocabulario",
     errorGeneric: "Error al analizar la imagen. Por favor intenta de nuevo.",
-    processing: "Procesando..."
+    processing: "Procesando...",
+    regenerateButton: "Regenerar"
   }
 };

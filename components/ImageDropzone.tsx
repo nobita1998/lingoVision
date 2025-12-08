@@ -17,23 +17,41 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelected, text }) 
   // --- Camera Logic ---
 
   const startCamera = async () => {
+    setIsProcessing(true);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'environment' } 
-      });
+      let stream: MediaStream;
+      
+      try {
+        // 1. Try environment facing mode with 'ideal' to allow fallback
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: { ideal: 'environment' } } 
+        });
+      } catch (envError) {
+        console.warn("Rear camera preference failed, falling back to any video.", envError);
+        // 2. Fallback to any available video input
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: true 
+        });
+      }
       
       streamRef.current = stream;
       setIsCameraOpen(true);
+      setIsProcessing(false);
       
+      // Allow a moment for the modal/div to render before attaching the stream
       setTimeout(() => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          // Explicitly attempt to play to ensure dimensions are available
+          videoRef.current.play().catch(e => console.error("Video play error:", e));
         }
-      }, 0);
+      }, 100);
 
     } catch (err) {
       console.error("Error accessing camera:", err);
-      alert("Could not access camera. Please check your permissions.");
+      setIsProcessing(false);
+      setIsCameraOpen(false);
+      alert("Could not access camera. Please ensure permissions are granted and no other app is using it.");
     }
   };
 
@@ -43,32 +61,45 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelected, text }) 
       streamRef.current = null;
     }
     setIsCameraOpen(false);
+    setIsProcessing(false); // Ensure we don't get stuck in processing if manually closed
   };
 
   const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      setIsProcessing(true);
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas) return;
+
+    // We capture synchronously to avoid race conditions with React state updates unmounting the video
+    try {
+      // Check if video has valid dimensions
+      if (video.videoWidth === 0 || video.videoHeight === 0) {
+           console.warn("Video dimensions are 0");
+           alert("Camera is not ready yet. Please wait a moment and try again.");
+           return;
+      }
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
       
-      // Use setTimeout to allow the UI to render the loading state before the heavy canvas operation
-      setTimeout(() => {
-        if (videoRef.current && canvasRef.current) {
-          const video = videoRef.current;
-          const canvas = canvasRef.current;
-          
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          
-          const context = canvas.getContext('2d');
-          if (context) {
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
-            stopCamera();
-            onImageSelected(dataUrl);
-            // We don't necessarily need setIsProcessing(false) here because the component will likely unmount 
-            // or the parent will hide it when imageBase64 is set.
-          }
-        }
-      }, 50);
+      const context = canvas.getContext('2d');
+      if (context) {
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Convert to base64 (JPEG 0.8 quality for smaller size)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        
+        // Stop camera stream
+        stopCamera();
+        
+        // Pass to parent
+        onImageSelected(dataUrl);
+      } else {
+          throw new Error("Could not get canvas context");
+      }
+    } catch (err) {
+      console.error("Capture failed:", err);
+      alert("Failed to capture photo. Please try again.");
     }
   };
 
@@ -141,6 +172,7 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({ onImageSelected, text }) 
           ref={videoRef} 
           autoPlay 
           playsInline 
+          muted 
           className="w-full h-full object-cover"
         />
         <canvas ref={canvasRef} className="hidden" />
