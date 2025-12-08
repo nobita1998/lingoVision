@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { AnalysisResponse, TargetLanguage } from '../types';
 import { synthesizeSpeech } from '../services/geminiService';
@@ -131,69 +132,65 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, targetLanguage, v
   };
 
   return (
-    <div className="animate-fade-in-up space-y-8">
+    <div className="space-y-6">
       {/* Caption Section */}
-      <div className="bg-white rounded-3xl p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] border-4 border-black relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-200 rounded-bl-full border-l-4 border-b-4 border-black -mr-1 -mt-1 z-0"></div>
-        
-        <div className="relative z-10">
-          <div className="flex justify-between items-start mb-4">
-            <h3 className="text-lg font-black text-black uppercase tracking-wide bg-yellow-400 px-3 py-1 border-2 border-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{text.captionLabel}</h3>
+      <div className="mb-6">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-sm font-black text-black uppercase tracking-wide bg-yellow-400 px-2 py-0.5 border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">{text.captionLabel}</h3>
             <button
               onClick={() => handlePlayAudio(data.caption, 'caption')}
               disabled={!!playingAudio || (!!loadingAudio && loadingAudio !== 'caption')}
-              className={`p-3 rounded-full border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[2px] active:translate-y-[2px] ${playingAudio === 'caption' ? 'bg-green-400 text-black' : 'bg-white text-black hover:bg-green-100'}`}
+              className={`p-2 rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all active:shadow-none active:translate-x-[1px] active:translate-y-[1px] ${playingAudio === 'caption' ? 'bg-green-400 text-black' : 'bg-white text-black hover:bg-green-100'}`}
               title="Listen to caption"
             >
               {loadingAudio === 'caption' ? (
-                <svg className="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               )}
             </button>
           </div>
-          <p className="text-2xl font-bold text-black mb-2 leading-relaxed">{data.caption}</p>
-          <p className="text-lg text-slate-600 italic font-medium">{data.translatedCaption}</p>
+          <p className="text-xl sm:text-2xl font-bold text-black mb-2 leading-relaxed">{data.caption}</p>
+          <p className="text-base sm:text-lg text-slate-600 italic font-medium">{data.translatedCaption}</p>
           
-          <div className="mt-4 inline-block bg-black text-white text-xs font-bold px-2 py-1 rounded uppercase tracking-wider">
+          <div className="mt-3 inline-block bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
             {data.difficultyParams}
           </div>
-        </div>
       </div>
 
       {/* Vocabulary Section */}
-      <div className="space-y-4">
-        <h3 className="text-xl font-black text-black flex items-center gap-2">
-          <span className="bg-pink-400 w-8 h-8 rounded-lg border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-white">V</span>
+      <div>
+        <h3 className="text-lg font-black text-black flex items-center gap-2 mb-3">
+          <span className="bg-pink-400 w-6 h-6 rounded border-2 border-black flex items-center justify-center shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] text-white text-sm">V</span>
           {text.vocabLabel}
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {data.vocabulary.map((item, idx) => (
-             <div key={idx} className="bg-white p-4 rounded-2xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-start justify-between hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all">
+             <div key={idx} className="bg-white p-3 rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-start justify-between hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all">
                 <div>
-                   <p className="text-lg font-black text-black">{item.word}</p>
-                   {item.pronunciation && <p className="text-sm text-slate-500 font-medium">{item.pronunciation}</p>}
-                   <p className="text-base text-slate-700 mt-1">{item.meaning}</p>
-                   <span className="inline-block mt-2 text-xs font-bold bg-slate-100 px-2 py-0.5 rounded border border-slate-300 text-slate-500">{item.partOfSpeech}</span>
+                   <p className="text-base font-black text-black">{item.word}</p>
+                   {item.pronunciation && <p className="text-xs text-slate-500 font-medium">{item.pronunciation}</p>}
+                   <p className="text-sm text-slate-700 mt-0.5">{item.meaning}</p>
+                   <span className="inline-block mt-1 text-[10px] font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-300 text-slate-500">{item.partOfSpeech}</span>
                 </div>
                 <button
                   onClick={() => handlePlayAudio(item.word, `word-${idx}`)}
                   disabled={!!playingAudio || (!!loadingAudio && loadingAudio !== `word-${idx}`)}
-                  className={`p-2 rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[1px] active:translate-y-[1px] ${playingAudio === `word-${idx}` ? 'bg-green-400' : 'bg-slate-50 hover:bg-slate-100'}`}
+                  className={`p-1.5 rounded-lg border-2 border-black shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-[1px] active:translate-y-[1px] ${playingAudio === `word-${idx}` ? 'bg-green-400' : 'bg-slate-50 hover:bg-slate-100'}`}
                 >
                   {loadingAudio === `word-${idx}` ? (
-                     <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                     <svg className="animate-spin h-4 w-4 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                      </svg>
                   ) : (
-                    <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   )}
